@@ -5,8 +5,7 @@
 
 const bodyTabla = document.querySelector('#bodyTabla');
 const formulario = document.querySelector('#formulario');
-const valorInput = document.getElementById("valorInput");
-
+const entradaFormulario = document.getElementById("entradaFormulario");
 
 
 /**
@@ -15,24 +14,32 @@ const valorInput = document.getElementById("valorInput");
 
 const fragment = document.createDocumentFragment();
 let arrayProductos;
-    //     id: 'producto-1',
-    //     producto: 'producto 1',
-    //     cantidad: 1,
-    // }
 
 
 /**
  * Eventos
- * Agregar y eliminar producto
- * submit (agregar) y click (eliminar)
- * entrada {string} Captura el valor del input
+ * Agregar producto (submit)
+ * entrada {string} Captura el valor del input del formulario
+ * entradaFormulario es el antiguo valorInput
  */
 
 formulario.addEventListener("submit", (event) => {
     event.preventDefault();
-    const entrada=event.target.valorInput.value;
-    validarEntrada(entrada)
+    const entrada = event.target.entradaFormulario.value;
+    validarEntrada(entrada);
 })
+
+/**
+ * Evento
+ * Eliminar producto (click)
+ */
+bodyTabla.addEventListener("click", (event) => {
+    
+    if (event.target.matches('BUTTON')) {
+        eliminarProducto(event.target.id);
+    }
+})
+
 
 /**
  * 
@@ -48,6 +55,7 @@ const validarEntrada = (entrada) => {
     agregarProducto(entradaValidada);
 }
 
+
 const setLocal = (todosLosProductos) => {
 
     if(!todosLosProductos) return
@@ -55,13 +63,9 @@ const setLocal = (todosLosProductos) => {
     localStorage.setItem("listaProductos", JSON.stringify(todosLosProductos))
 }
 
+
 const getLocal = () => {
     arrayProductos = JSON.parse(localStorage.getItem("listaProductos")) || [];
-    //     {
-    //     id:'producto-prueba',
-    //     nombre:'producto prueba',
-    //     cantidad:1
-    // }
     return  arrayProductos;
 }
 
@@ -69,7 +73,6 @@ const getLocal = () => {
 const agregarProducto = (entradaValidada) => {
     const arrayProductos = getLocal();
     const objProducto = arrayProductos.find((item) => item.nombre === entradaValidada)
-    // si objProducto existe, no si es igual que la entrada, porque eso ya lo hemos validado con el .find
     if (objProducto) {
         objProducto.cantidad += 1;
     } else {
@@ -82,7 +85,7 @@ const agregarProducto = (entradaValidada) => {
     }
     setLocal(arrayProductos);
     pintarTabla();
-
+}
     
  /*  TODO: recorrer el array buscando que exista
  
@@ -119,21 +122,36 @@ pintar tabla (todo fuera)
  */
 
 
-}
+
+
+/**
+ * Función para eliminar un producto
+ * Si la cantidad del producto es 1, el producto se elimina, sino decrementa en uno
+ * @param {String} id Identificador del botón y del producto a eliminar
+ * Con .filter() se crea un nuevo array con los elementos que cumplan una condición. La función callback debe devolver true o false para saber si hay que incluir el elemento o no
+ */
 
 const eliminarProducto = (id) => {
-
-    /*
+    let arrayProductos = getLocal();
+    arrayProductos = arrayProductos.filter((item) => {
+        if (item.id === id) {
+            if (item.cantidad > 1) {
+                item.cantidad -= 1;
+                return true;
+            } else {
+                return false;
+            }  
+        }
+        return true;
+    })
+    setLocal(arrayProductos);
+    pintarTabla()
+}
+/*
         arrayProductod=filtrar y devolver todos los productos que su id sea distinto al parametro
 
         setlocal(arrayProductod)
     */
-
-
-    pintarTabla()
-
-}
-
 // const pintarTabla = () => {
 //    const arrayProductos= getLocal()
 //    console.log(arrayProductos)
