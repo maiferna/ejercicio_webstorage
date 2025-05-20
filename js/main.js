@@ -44,31 +44,48 @@ bodyTabla.addEventListener("click", (event) => {
 /**
  * 
  * @param {String} entrada El valor capturado en el input
+ * @returns Llamada a agregarProducto una vez la entrada haya sido validada
  */
 
 const validarEntrada = (entrada) => {
-    console.log(entrada,'en validar')
+    const regExp = /^[a-zA-Z]+$/;
 
-    // TODO: VALIDAR ENTRADA Y VOLVER A SOLICITAR EN CASO DEL FALSE
-    const entradaValidada = entrada;
-
-    agregarProducto(entradaValidada);
+    if (!regExp.test(entrada)) {
+        console.log("Error: caracteres no válidos.")
+        return;
+    }
+    agregarProducto(entrada);
 }
 
+/**
+ * 
+ * @param {Array} todosLosProductos Array de productos
+ * @returns Convierte el array en un string JSON y lo guarda en localStroage con la clave "listaProductos"
+ */
 
 const setLocal = (todosLosProductos) => {
-
     if(!todosLosProductos) return
     
     localStorage.setItem("listaProductos", JSON.stringify(todosLosProductos))
 }
 
-
+/**
+ * Busca en localStorage la clave "listaProductos"
+ * @returns {Array} Devuelve el array de productos
+ * Si encuentra un string, lo convierte en un array con JSON
+ * Si no lo encuentra, devuelve un array vacío
+ */
 const getLocal = () => {
     arrayProductos = JSON.parse(localStorage.getItem("listaProductos")) || [];
     return  arrayProductos;
 }
 
+/**
+ * Función que agrega un producto a la tabla
+ * Si el producto existe, lo incrementa en 1, sino lo crea y lo añade a la tabla
+ * @param {Atring} entradaValidada Entrada del formulario validada
+ * Con setLocal() se actualiza el almacenamiento con el array actualizado
+ */
 
 const agregarProducto = (entradaValidada) => {
     const arrayProductos = getLocal();
