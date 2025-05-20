@@ -7,10 +7,13 @@ const bodyTabla = document.querySelector('#bodyTabla');
 const formulario = document.querySelector('#formulario');
 const valorInput = document.getElementById("valorInput");
 
+
+
 /**
- * Crear array productos
+ * Variables
  */
 
+const fragment = document.createDocumentFragment();
 let arrayProductos;
     //     id: 'producto-1',
     //     producto: 'producto 1',
@@ -36,7 +39,7 @@ formulario.addEventListener("submit", (event) => {
  * @param {String} entrada El valor capturado en el input
  */
 
-const validarEntrada=(entrada)=>{
+const validarEntrada = (entrada) => {
     console.log(entrada,'en validar')
 
     // TODO: VALIDAR ENTRADA Y VOLVER A SOLICITAR EN CASO DEL FALSE
@@ -131,20 +134,45 @@ const eliminarProducto = (id) => {
 
 }
 
+// const pintarTabla = () => {
+//    const arrayProductos= getLocal()
+//    console.log(arrayProductos)
+//    arrayProductos.forEach(item=>{
+//         bodyTabla.innerHTML=`<tr>
+//                                 <td> ${item.nombre}</td>
+//                                  <td> ${item.cantidad}</td>
+//                                   <td> <button id='${item.id}'>Eliminar </button></td>
+
+//                             </tr> `
+//    })
+
+
+// }
+
+/**
+ * Función que pinta la fila de la tabla con los elementos nombre, cantidad y botón de eliminar.
+ * bodyTabla.innerHTML = '' --> limpia la tabla para que las filas de los mismos productos no se dupliquen.
+ */
+
 const pintarTabla = () => {
-   const arrayProductos= getLocal()
-   console.log(arrayProductos)
-   arrayProductos.forEach(item=>{
-        bodyTabla.innerHTML=`<tr>
-                                <td> ${item.nombre}</td>
-                                 <td> ${item.cantidad}</td>
-                                  <td> <button id='${item.id}'>Eliminar </button></td>
+    const arrayProductos= getLocal();
+    bodyTabla.innerHTML = '';
+    arrayProductos.forEach(item => {
+        const filaTabla = document.createElement('TR');
+  
+        const celdaNombre = document.createElement('TD');
+        const celdaCantidad = document.createElement('TD');
+        const celdaAccion = document.createElement('TD');
+        const botonEliminar = document.createElement('BUTTON');
 
-                            </tr> `
-   })
+        celdaNombre.textContent = item.nombre;
+        celdaCantidad.textContent = item.cantidad;
+        botonEliminar.textContent = 'Eliminar';
+        botonEliminar.id = item.id;
 
-
+        celdaAccion.append(botonEliminar);
+        filaTabla.append(celdaNombre, celdaCantidad, celdaAccion);
+        fragment.append(filaTabla);
+    });
+    bodyTabla.append(fragment);
 }
-
-
-pintarTabla()
