@@ -83,7 +83,7 @@ const getLocal = () => {
 /**
  * Función que agrega un producto a la tabla
  * Si el producto existe, lo incrementa en 1, sino lo crea y lo añade a la tabla
- * @param {Atring} entradaValidada Entrada del formulario validada
+ * @param {String} entradaValidada Entrada del formulario validada
  * Con setLocal() se actualiza el almacenamiento con el array actualizado
  */
 
@@ -103,49 +103,13 @@ const agregarProducto = (entradaValidada) => {
     setLocal(arrayProductos);
     pintarTabla();
 }
-    
- /*  TODO: recorrer el array buscando que exista
- 
-    si existe - incrementar cantidad en uno
-      actualizo el localstorage
-      pinto tabla
-
-    si no existe crear un nuevo objeto 
-            crear id - coger el productoName y reemplazar el espacio por un guión
-
-      newProduct  {
-            id:'idCreado',
-            nomber: ' productoName';
-            cantidad:1
-        }
-        
-        arrayPdroductos.push(newProduct)
-
-        añado al localstorage  
-    ???'?????
-localStorage.setItem("listaProductos", JSON.stringify([...arrayProductos, newProduct]))
-
-setLocal([...arrayProductos, newProduct])
-
-actualizar localstorage
-pintar tabla (todo fuera)
-        
-
-    ???????
-
-        pintar
- 
- 
- */
-
-
 
 
 /**
  * Función para eliminar un producto
  * Si la cantidad del producto es 1, el producto se elimina, sino decrementa en uno
  * @param {String} id Identificador del botón y del producto a eliminar
- * Con .filter() se crea un nuevo array con los elementos que cumplan una condición. La función callback debe devolver true o false para saber si hay que incluir el elemento o no
+ * Con .filter() se crea un nuevo array con los elementos que cumplan una condición. La función callback debe devolver true o false para saber si hay que dejar el elemento en el array o no
  */
 
 const eliminarProducto = (id) => {
@@ -164,25 +128,7 @@ const eliminarProducto = (id) => {
     setLocal(arrayProductos);
     pintarTabla()
 }
-/*
-        arrayProductod=filtrar y devolver todos los productos que su id sea distinto al parametro
 
-        setlocal(arrayProductod)
-    */
-// const pintarTabla = () => {
-//    const arrayProductos= getLocal()
-//    console.log(arrayProductos)
-//    arrayProductos.forEach(item=>{
-//         bodyTabla.innerHTML=`<tr>
-//                                 <td> ${item.nombre}</td>
-//                                  <td> ${item.cantidad}</td>
-//                                   <td> <button id='${item.id}'>Eliminar </button></td>
-
-//                             </tr> `
-//    })
-
-
-// }
 
 /**
  * Función que pinta la fila de la tabla con los elementos nombre, cantidad y botón de eliminar.
