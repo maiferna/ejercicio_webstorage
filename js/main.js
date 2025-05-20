@@ -22,16 +22,19 @@ let arrayProductos;
  * Eventos
  * Agregar y eliminar producto
  * submit (agregar) y click (eliminar)
+ * entrada {string} Captura el valor del input
  */
- 
+
 formulario.addEventListener("submit", (event) => {
-    
-    event.preventDefault()
+    event.preventDefault();
     const entrada=event.target.valorInput.value;
-   
-    //agregarProducto(nombre);
     validarEntrada(entrada)
 })
+
+/**
+ * 
+ * @param {String} entrada El valor capturado en el input
+ */
 
 const validarEntrada=(entrada)=>{
     console.log(entrada,'en validar')
@@ -49,45 +52,35 @@ const setLocal = (todosLosProductos) => {
     localStorage.setItem("listaProductos", JSON.stringify(todosLosProductos))
 }
 
-const getLocal=()=>{
-    arrayProductos = JSON.parse(localStorage.getItem("listaProductos")) || [
+const getLocal = () => {
+    arrayProductos = JSON.parse(localStorage.getItem("listaProductos")) || [];
     //     {
     //     id:'producto-prueba',
     //     nombre:'producto prueba',
     //     cantidad:1
     // }
-]
-
-    return  arrayProductos
+    return  arrayProductos;
 }
 
 
 const agregarProducto = (entradaValidada) => {
-    // arrayProductos = getLocal();
-    // console.log(arrayProductos)
-    arrayProductos = [{
-        id: "",
-        nombre: "",
-        cantidad: 1,
-    }];
-    const objProducto = arrayProductos.find((item) => {
-        return item.nombre === entradaValidada;
-    })
-    console.log(objProducto);
-    if (entradaValidada === objProducto.nombre) {
+    const arrayProductos = getLocal();
+    const objProducto = arrayProductos.find((item) => item.nombre === entradaValidada)
+    // si objProducto existe, no si es igual que la entrada, porque eso ya lo hemos validado con el .find
+    if (objProducto) {
         objProducto.cantidad += 1;
-        console.log(objProducto.nombre, "Entra en objProducto si existe");
     } else {
         let newProduct = {
             id: entradaValidada.split(' ').join('-'),
             nombre: `${entradaValidada}`,
             cantidad: 1
         }
-        console.log("Entra en objProducto si no existe");
         arrayProductos.push(newProduct);
     }
     setLocal(arrayProductos);
     pintarTabla();
+
+    
  /*  TODO: recorrer el array buscando que exista
  
     si existe - incrementar cantidad en uno
